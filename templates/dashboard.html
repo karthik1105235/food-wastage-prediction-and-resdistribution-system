@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Food Wastage Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold">Welcome, {{ current_user.name }}!</h1>
+            <p class="text-muted">Manage your food redistribution events</p>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-check mb-3" style="font-size: 2rem;"></i>
+                    <h3 class="fw-bold">{{ events|length }}</h3>
+                    <p class="mb-0">Total Events</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle mb-3" style="font-size: 2rem;"></i>
+                    <h3 class="fw-bold">{{ events|selectattr('status', 'equalto', 'confirmed')|list|length }}</h3>
+                    <p class="mb-0">Confirmed</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock mb-3" style="font-size: 2rem;"></i>
+                    <h3 class="fw-bold">{{ events|selectattr('status', 'equalto', 'pending')|list|length }}</h3>
+                    <p class="mb-0">Pending</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-utensils mb-3" style="font-size: 2rem;"></i>
+                    <h3 class="fw-bold">{{ events|sum(attribute='food_quantity_plates') }}</h3>
+                    <p class="mb-0">Plates Saved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Quick Actions</h5>
+                    <div class="d-flex gap-3">
+                        <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Create New Event
+                        </a>
+                        <a href="{{ url_for('analytics') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-chart-bar me-2"></i>View Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Events -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Events</h5>
+                </div>
+                <div class="card-body">
+                    {% if events %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Event Type</th>
+                                        <th>Location</th>
+                                        <th>Food Quantity</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in events[:10] %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ event.event_type }}</strong>
+                                        </td>
+                                        <td>{{ event.location }}</td>
+                                        <td>
+                                            {{ event.food_quantity_plates }} plates, 
+                                            {{ event.food_quantity_items }} items
+                                        </td>
+                                        <td>
+                                            {% if event.status == 'confirmed' %}
+                                                <span class="badge bg-success">Confirmed</span>
+                                            {% elif event.status == 'pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ event.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            {% if event.status == 'pending' %}
+                                                <a href="{{ url_for('predict_redistribution', event_id=event.id) }}" 
+                                                   class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>Predict
+                                                </a>
+                                            {% elif event.status == 'confirmed' %}
+                                                <span class="text-success">
+                                                    <i class="fas fa-check-circle me-1"></i>Redistributed
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted">No events yet</h5>
+                            <p class="text-muted">Create your first event to start reducing food wastage!</p>
+                            <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Create Event
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

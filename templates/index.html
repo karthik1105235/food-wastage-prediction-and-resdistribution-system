@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Food Wastage Prediction System{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Reduce Food Wastage, Feed Communities</h1>
+                <p class="lead mb-4">Our intelligent system predicts nearby areas where excess food from events can be redistributed, helping reduce hunger and food wastage simultaneously.</p>
+                <div class="d-flex gap-3">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">Get Started</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('create_event') }}" class="btn btn-light btn-lg">Create Event</a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg">Dashboard</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-recycle" style="font-size: 200px; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Simple steps to make a big difference</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-calendar-plus text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">1. Create Event</h5>
+                        <p class="card-text">Register your event details including food quantity and location. Our system will analyze the data.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-map-marker-alt text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">2. Predict Locations</h5>
+                        <p class="card-text">Our AI predicts nearby areas where food is needed based on real-time data and community needs.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-truck text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">3. Redistribute</h5>
+                        <p class="card-text">Our team agents pick up the food and deliver it to the identified location, reducing hunger.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Why Choose Our System?</h2>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold">Intelligent Prediction</h6>
+                                <p class="text-muted">Advanced algorithms predict optimal redistribution locations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold">Real-time Tracking</h6>
+                                <p class="text-muted">Monitor your food redistribution process in real-time</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold">Community Impact</h6>
+                                <p class="text-muted">Make a direct impact on reducing hunger in your community</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold">Environmental Benefits</h6>
+                                <p class="text-muted">Reduce food wastage and contribute to environmental sustainability</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-chart-line" style="font-size: 200px; color: #2c5530; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold mb-4">Ready to Make a Difference?</h2>
+                <p class="lead mb-4">Join thousands of users who are already reducing food wastage and feeding communities.</p>
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start Now</a>
+                {% else %}
+                    <a href="{{ url_for('create_event') }}" class="btn btn-primary btn-lg">Create Your First Event</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

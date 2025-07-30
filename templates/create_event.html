@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Create Event - Food Wastage Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Create New Event</h2>
+                        <p class="text-muted">Tell us about your event and food wastage</p>
+                    </div>
+                    
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="event_type" class="form-label">Event Type</label>
+                                <select class="form-select" id="event_type" name="event_type" required>
+                                    <option value="">Select event type</option>
+                                    <option value="Wedding">Wedding</option>
+                                    <option value="Corporate Event">Corporate Event</option>
+                                    <option value="Birthday Party">Birthday Party</option>
+                                    <option value="Conference">Conference</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Catering Service">Catering Service</option>
+                                    <option value="Festival">Festival</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="location" class="form-label">Event Location</label>
+                                <input type="text" class="form-control" id="location" name="location" 
+                                       placeholder="Enter full address" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="food_quantity_plates" class="form-label">Food Quantity (Plates)</label>
+                                <input type="number" class="form-control" id="food_quantity_plates" 
+                                       name="food_quantity_plates" min="1" placeholder="Number of plates" required>
+                                <div class="form-text">Number of food plates available for redistribution</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <label for="food_quantity_items" class="form-label">Food Quantity (Items)</label>
+                                <input type="number" class="form-control" id="food_quantity_items" 
+                                       name="food_quantity_items" min="1" placeholder="Number of items" required>
+                                <div class="form-text">Number of food items (packets, containers, etc.)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus me-2"></i>Create Event & Predict Redistribution
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Card -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-info-circle text-primary me-2"></i>How it works
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-calendar-plus text-primary mb-2" style="font-size: 2rem;"></i>
+                                <h6>1. Create Event</h6>
+                                <p class="text-muted small">Provide event details and food quantity</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-map-marker-alt text-primary mb-2" style="font-size: 2rem;"></i>
+                                <h6>2. Predict Locations</h6>
+                                <p class="text-muted small">Our AI finds nearby areas in need</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-truck text-primary mb-2" style="font-size: 2rem;"></i>
+                                <h6>3. Redistribute</h6>
+                                <p class="text-muted small">Our team picks up and delivers the food</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

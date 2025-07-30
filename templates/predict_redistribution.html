@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Predict Redistribution - Food Wastage Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold">Redistribution Prediction</h1>
+            <p class="text-muted">Select a location for food redistribution</p>
+        </div>
+    </div>
+    
+    <!-- Event Details -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-calendar me-2"></i>Event Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Event Type:</strong><br>
+                            {{ event.event_type }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Location:</strong><br>
+                            {{ event.location }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Food Plates:</strong><br>
+                            {{ event.food_quantity_plates }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Food Items:</strong><br>
+                            {{ event.food_quantity_items }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Redistribution Locations -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>Nearby Redistribution Locations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if locations %}
+                        <div class="row">
+                            {% for location in locations %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="card location-card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div>
+                                                <h5 class="card-title mb-1">{{ location.name }}</h5>
+                                                <p class="text-muted mb-2">{{ location.address }}</p>
+                                            </div>
+                                            <span class="badge bg-primary">{{ location.type.replace('_', ' ').title() }}</span>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Capacity</small><br>
+                                                <strong>{{ location.capacity }} people</strong>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Current Need</small><br>
+                                                <strong>{{ location.current_need }} plates</strong>
+                                            </div>
+                                        </div>
+                                        
+                                        {% if location.distance %}
+                                        <div class="mb-3">
+                                            <small class="text-muted">Distance from event</small><br>
+                                            <strong>{{ "%.1f"|format(location.distance) }} km</strong>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <div class="d-grid">
+                                            <a href="{{ url_for('confirm_redistribution', event_id=event.id, location_id=location.id) }}" 
+                                               class="btn btn-primary">
+                                                <i class="fas fa-check me-2"></i>Select This Location
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-map-marker-alt text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted">No redistribution locations found</h5>
+                            <p class="text-muted">Please try again later or contact support.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Information -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="fas fa-info-circle text-primary me-2"></i>What happens next?
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-phone text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                <h6>1. Contact</h6>
+                                <p class="text-muted small">Our team will contact you within 2 hours</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-truck text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                <h6>2. Pickup</h6>
+                                <p class="text-muted small">We'll arrange pickup at your convenience</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-heart text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                <h6>3. Delivery</h6>
+                                <p class="text-muted small">Food will be delivered to those in need</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
