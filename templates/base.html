@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,78 +8,271 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Light Theme Variables */
+            --primary-color: #2c5530;
+            --primary-hover: #1e3a22;
+            --secondary-color: #4a7c59;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --navbar-bg: #ffffff;
+            --navbar-text: #212529;
+            --footer-bg: #2c5530;
+            --footer-text: #ffffff;
+            --form-bg: #ffffff;
+            --form-border: #e9ecef;
+            --form-focus: #2c5530;
+            --alert-bg: #ffffff;
+            --table-bg: #ffffff;
+            --table-border: #dee2e6;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme Variables */
+            --primary-color: #4ade80;
+            --primary-hover: #22c55e;
+            --secondary-color: #6ee7b7;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --card-bg: #1e293b;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --navbar-bg: #1e293b;
+            --navbar-text: #f1f5f9;
+            --footer-bg: #0f172a;
+            --footer-text: #f1f5f9;
+            --form-bg: #334155;
+            --form-border: #475569;
+            --form-focus: #4ade80;
+            --alert-bg: #1e293b;
+            --table-bg: #1e293b;
+            --table-border: #475569;
+        }
+
         * {
             font-family: 'Poppins', sans-serif;
         }
-        
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg) !important;
+            border-bottom: 1px solid var(--border-color);
+        }
+
         .navbar-brand {
             font-weight: 700;
-            color: #2c5530 !important;
+            color: var(--primary-color) !important;
         }
-        
+
+        .navbar-nav .nav-link {
+            color: var(--navbar-text) !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-toggler {
+            border-color: var(--border-color);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(33, 37, 41, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        [data-theme="dark"] .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(241, 245, 249, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
         .btn-primary {
-            background-color: #2c5530;
-            border-color: #2c5530;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
-        
+
         .btn-primary:hover {
-            background-color: #1e3a22;
-            border-color: #1e3a22;
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
         }
-        
+
         .card {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
             border-radius: 15px;
         }
-        
+
         .hero-section {
-            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             padding: 100px 0;
         }
-        
+
         .feature-card {
             transition: transform 0.3s ease;
+            background-color: var(--card-bg);
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .alert {
             border-radius: 10px;
             border: none;
+            background-color: var(--alert-bg);
+            color: var(--text-primary);
         }
-        
+
         .form-control {
+            background-color: var(--form-bg);
+            border: 2px solid var(--form-border);
+            color: var(--text-primary);
             border-radius: 10px;
-            border: 2px solid #e9ecef;
         }
-        
+
         .form-control:focus {
-            border-color: #2c5530;
-            box-shadow: 0 0 0 0.2rem rgba(44, 85, 48, 0.25);
+            background-color: var(--form-bg);
+            border-color: var(--form-focus);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(74, 222, 128, 0.25);
         }
-        
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-label {
+            color: var(--text-primary);
+        }
+
         .stats-card {
-            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
         }
-        
+
         .location-card {
-            border-left: 4px solid #2c5530;
+            border-left: 4px solid var(--primary-color);
         }
-        
+
+        .table {
+            background-color: var(--table-bg);
+            color: var(--text-primary);
+        }
+
+        .table th,
+        .table td {
+            border-color: var(--table-border);
+        }
+
         .footer {
-            background-color: #2c5530;
-            color: white;
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
             padding: 40px 0;
+        }
+
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background-color: var(--bg-tertiary);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.active::before {
+            transform: translateX(30px);
+        }
+
+        .theme-toggle .icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle .sun-icon {
+            left: 8px;
+        }
+
+        .theme-toggle .moon-icon {
+            right: 8px;
+        }
+
+        .theme-toggle.active .sun-icon {
+            opacity: 0;
+        }
+
+        .theme-toggle:not(.active) .moon-icon {
+            opacity: 0;
+        }
+
+        /* Additional Dark Theme Adjustments */
+        [data-theme="dark"] .bg-light {
+            background-color: var(--bg-secondary) !important;
+        }
+
+        [data-theme="dark"] .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        [data-theme="dark"] .border {
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .dropdown-menu {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .dropdown-item {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .dropdown-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Smooth transitions for all elements */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-leaf me-2"></i>FoodWaste Predictor
@@ -113,6 +306,12 @@
                             <a class="nav-link" href="{{ url_for('register') }}">Register</a>
                         </li>
                     {% endif %}
+                    <li class="nav-item ms-2">
+                        <div class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                            <i class="fas fa-sun icon sun-icon"></i>
+                            <i class="fas fa-moon icon moon-icon"></i>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -151,6 +350,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Theme Management
+        class ThemeManager {
+            constructor() {
+                this.themeToggle = document.getElementById('themeToggle');
+                this.html = document.documentElement;
+                this.currentTheme = localStorage.getItem('theme') || 'light';
+                
+                this.init();
+            }
+
+            init() {
+                // Set initial theme
+                this.setTheme(this.currentTheme);
+                
+                // Add event listener
+                this.themeToggle.addEventListener('click', () => {
+                    this.toggleTheme();
+                });
+            }
+
+            setTheme(theme) {
+                this.html.setAttribute('data-theme', theme);
+                this.currentTheme = theme;
+                localStorage.setItem('theme', theme);
+                
+                // Update toggle state
+                if (theme === 'dark') {
+                    this.themeToggle.classList.add('active');
+                } else {
+                    this.themeToggle.classList.remove('active');
+                }
+            }
+
+            toggleTheme() {
+                const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                this.setTheme(newTheme);
+            }
+        }
+
+        // Initialize theme manager when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+        });
+    </script>
+    
     {% block scripts %}{% endblock %}
 </body>
 </html> 

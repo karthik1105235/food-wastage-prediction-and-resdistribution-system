@@ -154,19 +154,82 @@
 
 {% block scripts %}
 <script>
+// Theme-aware chart colors
+function getChartColors() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    
+    if (isDark) {
+        return {
+            primary: '#4ade80',
+            secondary: '#6ee7b7',
+            tertiary: '#22c55e',
+            quaternary: '#16a34a',
+            background: 'rgba(74, 222, 128, 0.1)',
+            text: '#f1f5f9',
+            grid: '#475569'
+        };
+    } else {
+        return {
+            primary: '#2c5530',
+            secondary: '#4a7c59',
+            tertiary: '#6ba368',
+            quaternary: '#8bc34a',
+            background: 'rgba(44, 85, 48, 0.1)',
+            text: '#212529',
+            grid: '#dee2e6'
+        };
+    }
+}
+
+// Function to update chart themes
+function updateChartThemes() {
+    const colors = getChartColors();
+    
+    // Update Event Types Chart
+    if (window.eventTypesChart) {
+        window.eventTypesChart.data.datasets[0].backgroundColor = [
+            colors.primary,
+            colors.secondary,
+            colors.tertiary,
+            colors.quaternary,
+            '#cddc39',
+            '#ffeb3b',
+            '#ff9800',
+            '#ff5722'
+        ];
+        window.eventTypesChart.options.plugins.legend.labels.color = colors.text;
+        window.eventTypesChart.update();
+    }
+    
+    // Update Monthly Chart
+    if (window.monthlyChart) {
+        window.monthlyChart.data.datasets[0].borderColor = colors.primary;
+        window.monthlyChart.data.datasets[0].backgroundColor = colors.background;
+        window.monthlyChart.data.datasets[1].borderColor = colors.secondary;
+        window.monthlyChart.data.datasets[1].backgroundColor = colors.background;
+        window.monthlyChart.options.plugins.legend.labels.color = colors.text;
+        window.monthlyChart.options.scales.x.grid.color = colors.grid;
+        window.monthlyChart.options.scales.y.grid.color = colors.grid;
+        window.monthlyChart.options.scales.x.ticks.color = colors.text;
+        window.monthlyChart.options.scales.y.ticks.color = colors.text;
+        window.monthlyChart.update();
+    }
+}
+
 // Event Types Chart
 const eventTypesCtx = document.getElementById('eventTypesChart').getContext('2d');
-const eventTypesChart = new Chart(eventTypesCtx, {
+const colors = getChartColors();
+window.eventTypesChart = new Chart(eventTypesCtx, {
     type: 'doughnut',
     data: {
         labels: [{% for event_type, count in event_types %}'{{ event_type }}'{% if not loop.last %}, {% endif %}{% endfor %}],
         datasets: [{
             data: [{% for event_type, count in event_types %}{{ count }}{% if not loop.last %}, {% endif %}{% endfor %}],
             backgroundColor: [
-                '#2c5530',
-                '#4a7c59',
-                '#6ba368',
-                '#8bc34a',
+                colors.primary,
+                colors.secondary,
+                colors.tertiary,
+                colors.quaternary,
                 '#cddc39',
                 '#ffeb3b',
                 '#ff9800',
@@ -178,7 +241,12 @@ const eventTypesChart = new Chart(eventTypesCtx, {
         responsive: true,
         plugins: {
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                labels: {
+                    color: colors.text,
+                    usePointStyle: true,
+                    padding: 20
+                }
             }
         }
     }
@@ -186,37 +254,78 @@ const eventTypesChart = new Chart(eventTypesCtx, {
 
 // Monthly Chart
 const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-const monthlyChart = new Chart(monthlyCtx, {
+window.monthlyChart = new Chart(monthlyCtx, {
     type: 'line',
     data: {
         labels: [{% for month, count, plates in monthly_data %}'{{ month }}'{% if not loop.last %}, {% endif %}{% endfor %}],
         datasets: [{
             label: 'Events',
             data: [{% for month, count, plates in monthly_data %}{{ count }}{% if not loop.last %}, {% endif %}{% endfor %}],
-            borderColor: '#2c5530',
-            backgroundColor: 'rgba(44, 85, 48, 0.1)',
-            tension: 0.4
+            borderColor: colors.primary,
+            backgroundColor: colors.background,
+            tension: 0.4,
+            fill: true
         }, {
             label: 'Plates Saved',
             data: [{% for month, count, plates in monthly_data %}{{ plates or 0 }}{% if not loop.last %}, {% endif %}{% endfor %}],
-            borderColor: '#4a7c59',
-            backgroundColor: 'rgba(74, 124, 89, 0.1)',
-            tension: 0.4
+            borderColor: colors.secondary,
+            backgroundColor: colors.background,
+            tension: 0.4,
+            fill: true
         }]
     },
     options: {
         responsive: true,
         plugins: {
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                labels: {
+                    color: colors.text,
+                    usePointStyle: true,
+                    padding: 20
+                }
             }
         },
         scales: {
+            x: {
+                grid: {
+                    color: colors.grid
+                },
+                ticks: {
+                    color: colors.text
+                }
+            },
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                grid: {
+                    color: colors.grid
+                },
+                ticks: {
+                    color: colors.text
+                }
             }
         }
     }
+});
+
+// Listen for theme changes
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial theme update
+    updateChartThemes();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                updateChartThemes();
+            }
+        });
+    });
+    
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+    });
 });
 </script>
 {% endblock %} 
